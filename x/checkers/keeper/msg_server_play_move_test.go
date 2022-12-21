@@ -110,7 +110,7 @@ func TestPlayMoveWrongOutOfTurn(t *testing.T) {
 		ToY:       4,
 	})
 	require.Nil(t, playMoveResponse)
-	require.Equal(t, "Not {red}'s turn: wrong move", err.Error())
+	require.Equal(t, "{red}: player tried to play out of turn", err.Error())
 }
 
 func TestPlayMoveWrongPieceAtDestination(t *testing.T) {
