@@ -30753,6 +30753,8 @@ definitions:
         format: int32
       winner:
         type: string
+  alice.checkers.checkers.MsgRejectGameResponse:
+    type: object
   alice.checkers.checkers.Params:
     type: object
     description: Params defines the parameters for the module.
