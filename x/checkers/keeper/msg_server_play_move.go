@@ -62,6 +62,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	// update the game
 	storedGame.Board = game.String()
 	storedGame.Turn = rules.PieceStrings[game.Turn]
+	storedGame.MoveCount++
 	k.Keeper.SetStoredGame(ctx, storedGame)
 
 	ctx.EventManager().EmitEvent(

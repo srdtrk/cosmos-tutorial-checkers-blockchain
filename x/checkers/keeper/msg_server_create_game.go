@@ -22,11 +22,12 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 
 	newGame := rules.New()
 	storedGame := types.StoredGame{
-		Index: newIndex,
-		Board: newGame.String(),                 // new board state
-		Turn:  rules.PieceStrings[newGame.Turn], // this returns "r" or "b" depending on rules
-		Black: msg.Black,
-		Red:   msg.Red,
+		Index:     newIndex,
+		Board:     newGame.String(),                 // new board state
+		Turn:      rules.PieceStrings[newGame.Turn], // this returns "r" or "b" depending on rules
+		Black:     msg.Black,
+		Red:       msg.Red,
+		MoveCount: 0,
 	}
 
 	// make sure the addresses black and red are valid
