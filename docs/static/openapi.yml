@@ -65,6 +65,10 @@ paths:
                       type: string
                     red:
                       type: string
+                    moveCount:
+                      type: string
+                      format: uint64
+                      title: adding this field later
               pagination:
                 type: object
                 properties:
@@ -192,6 +196,10 @@ paths:
                     type: string
                   red:
                     type: string
+                  moveCount:
+                    type: string
+                    format: uint64
+                    title: adding this field later
         default:
           description: An unexpected error response.
           schema:
@@ -30776,6 +30784,10 @@ definitions:
               type: string
             red:
               type: string
+            moveCount:
+              type: string
+              format: uint64
+              title: adding this field later
       pagination:
         type: object
         properties:
@@ -30817,6 +30829,10 @@ definitions:
             type: string
           red:
             type: string
+          moveCount:
+            type: string
+            format: uint64
+            title: adding this field later
   alice.checkers.checkers.QueryGetSystemInfoResponse:
     type: object
     properties:
@@ -30846,6 +30862,10 @@ definitions:
         type: string
       red:
         type: string
+      moveCount:
+        type: string
+        format: uint64
+        title: adding this field later
   alice.checkers.checkers.SystemInfo:
     type: object
     properties:
