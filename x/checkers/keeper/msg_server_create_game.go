@@ -22,12 +22,14 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 
 	newGame := rules.New()
 	storedGame := types.StoredGame{
-		Index:     newIndex,
-		Board:     newGame.String(),                 // new board state
-		Turn:      rules.PieceStrings[newGame.Turn], // this returns "r" or "b" depending on rules
-		Black:     msg.Black,
-		Red:       msg.Red,
-		MoveCount: 0,
+		Index:       newIndex,
+		Board:       newGame.String(),                 // new board state
+		Turn:        rules.PieceStrings[newGame.Turn], // this returns "r" or "b" depending on rules
+		Black:       msg.Black,
+		Red:         msg.Red,
+		MoveCount:   0,
+		BeforeIndex: types.NoFifoIndex,
+		AfterIndex:  types.NoFifoIndex,
 	}
 
 	// make sure the addresses black and red are valid
@@ -36,6 +38,7 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 		return nil, err
 	}
 
+	k.Keeper.SendToFifoTail(ctx, &storedGame, &systemInfo)
 	k.Keeper.SetStoredGame(ctx, storedGame)
 
 	// increase game id
