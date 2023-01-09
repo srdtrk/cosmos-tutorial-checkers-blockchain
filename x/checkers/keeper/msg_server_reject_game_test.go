@@ -25,29 +25,6 @@ func setupMsgServerWithOneGameForRejectGame(t testing.TB) (types.MsgServer, keep
 	return server, *k, context
 }
 
-func TestRejectGameByRedOneMoveRemovedGame(t *testing.T) {
-	msgServer, keeper, context := setupMsgServerWithOneGameForRejectGame(t)
-	msgServer.PlayMove(context, &types.MsgPlayMove{
-		Creator:   bob,
-		GameIndex: "1",
-		FromX:     1,
-		FromY:     2,
-		ToX:       2,
-		ToY:       3,
-	})
-	msgServer.RejectGame(context, &types.MsgRejectGame{
-		Creator:   carol,
-		GameIndex: "1",
-	})
-	systemInfo, found := keeper.GetSystemInfo(sdk.UnwrapSDKContext(context))
-	require.True(t, found)
-	require.EqualValues(t, types.SystemInfo{
-		NextId: 2,
-	}, systemInfo)
-	_, found = keeper.GetStoredGame(sdk.UnwrapSDKContext(context), "1")
-	require.False(t, found) // WAS FALSE
-}
-
 func TestRejectGameWrongByCreator(t *testing.T) {
 	msgServer, _, context := setupMsgServerWithOneGameForRejectGame(t)
 	rejectGameResponse, err := msgServer.RejectGame(context, &types.MsgRejectGame{
@@ -78,7 +55,9 @@ func TestRejectGameByBlackNoMoveRemovedGame(t *testing.T) {
 	systemInfo, found := keeper.GetSystemInfo(ctx)
 	require.True(t, found)
 	require.EqualValues(t, types.SystemInfo{
-		NextId: 2,
+		NextId:        2,
+		FifoHeadIndex: "-1",
+		FifoTailIndex: "-1",
 	}, systemInfo)
 	_, found = keeper.GetStoredGame(ctx, "1")
 	require.False(t, found)
@@ -124,7 +103,9 @@ func TestRejectGameByRedNoMoveRemovedGame(t *testing.T) {
 	systemInfo, found := keeper.GetSystemInfo(ctx)
 	require.True(t, found)
 	require.EqualValues(t, types.SystemInfo{
-		NextId: 2,
+		NextId:        2,
+		FifoHeadIndex: "-1",
+		FifoTailIndex: "-1",
 	}, systemInfo)
 	_, found = keeper.GetStoredGame(ctx, "1")
 	require.False(t, found)
@@ -166,6 +147,32 @@ func TestRejectGameByRedOneMove(t *testing.T) {
 	})
 	require.Nil(t, err)
 	require.EqualValues(t, types.MsgRejectGameResponse{}, *rejectGameResponse)
+}
+
+func TestRejectGameByRedOneMoveRemovedGame(t *testing.T) {
+	msgServer, keeper, context := setupMsgServerWithOneGameForRejectGame(t)
+	ctx := sdk.UnwrapSDKContext(context)
+	msgServer.PlayMove(context, &types.MsgPlayMove{
+		Creator:   bob,
+		GameIndex: "1",
+		FromX:     1,
+		FromY:     2,
+		ToX:       2,
+		ToY:       3,
+	})
+	msgServer.RejectGame(context, &types.MsgRejectGame{
+		Creator:   carol,
+		GameIndex: "1",
+	})
+	systemInfo, found := keeper.GetSystemInfo(ctx)
+	require.True(t, found)
+	require.EqualValues(t, types.SystemInfo{
+		NextId:        2,
+		FifoHeadIndex: "-1",
+		FifoTailIndex: "-1",
+	}, systemInfo)
+	_, found = keeper.GetStoredGame(ctx, "1")
+	require.False(t, found)
 }
 
 func TestRejectGameByRedOneMoveEmitted(t *testing.T) {
