@@ -78,6 +78,8 @@ paths:
                     deadline:
                       type: string
                       title: Pertains to when the games should be deleted
+                    winner:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -218,6 +220,8 @@ paths:
                   deadline:
                     type: string
                     title: Pertains to when the games should be deleted
+                  winner:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -30821,6 +30825,8 @@ definitions:
             deadline:
               type: string
               title: Pertains to when the games should be deleted
+            winner:
+              type: string
       pagination:
         type: object
         properties:
@@ -30875,6 +30881,8 @@ definitions:
           deadline:
             type: string
             title: Pertains to when the games should be deleted
+          winner:
+            type: string
   alice.checkers.checkers.QueryGetSystemInfoResponse:
     type: object
     properties:
@@ -30923,6 +30931,8 @@ definitions:
       deadline:
         type: string
         title: Pertains to when the games should be deleted
+      winner:
+        type: string
   alice.checkers.checkers.SystemInfo:
     type: object
     properties:
