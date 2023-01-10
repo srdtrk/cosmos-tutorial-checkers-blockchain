@@ -31,6 +31,7 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 		BeforeIndex: types.NoFifoIndex,
 		AfterIndex:  types.NoFifoIndex,
 		Deadline:    types.FormatDeadline(types.GetNextDeadline(ctx)),
+		Winner:      rules.PieceStrings[rules.NO_PLAYER],
 	}
 
 	// make sure the addresses black and red are valid

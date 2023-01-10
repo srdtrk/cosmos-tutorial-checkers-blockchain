@@ -19,6 +19,9 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 		return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "%s", msg.GameIndex)
 	}
 
+	if storedGame.Winner != rules.PieceStrings[rules.NO_PLAYER] {
+		return nil, types.ErrGameFinished
+	}
 	// verify the player
 	isBlack := storedGame.Black == msg.Creator
 	isRed := storedGame.Red == msg.Creator
@@ -62,6 +65,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	// update the game
 	storedGame.Board = game.String()
 	storedGame.Turn = rules.PieceStrings[game.Turn]
+	storedGame.Winner = rules.PieceStrings[game.Winner()]
 
 	systemInfo, found := k.Keeper.GetSystemInfo(ctx)
 	if !found {
