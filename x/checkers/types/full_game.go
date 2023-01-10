@@ -71,7 +71,7 @@ func (storedGame StoredGame) Validate() (err error) {
 
 // date helpers
 
-func (storedGame *StoredGame) GetDeadlineAsTime() (deadline time.Time, err error) {
+func (storedGame StoredGame) GetDeadlineAsTime() (deadline time.Time, err error) {
 	deadline, errDeadline := time.Parse(DeadlineLayout, storedGame.Deadline)
 	return deadline, sdkerrors.Wrapf(errDeadline, ErrInvalidDeadline.Error(), storedGame.Deadline)
 }
