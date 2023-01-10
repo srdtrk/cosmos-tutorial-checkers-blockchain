@@ -69,6 +69,15 @@ paths:
                       type: string
                       format: uint64
                       title: adding this field later
+                    beforeIndex:
+                      type: string
+                      description: Pertains to the FIFO. Toward head.
+                    afterIndex:
+                      type: string
+                      description: Pertains to the FIFO. Toward tail.
+                    deadline:
+                      type: string
+                      title: Pertains to when the games should be deleted
               pagination:
                 type: object
                 properties:
@@ -200,6 +209,15 @@ paths:
                     type: string
                     format: uint64
                     title: adding this field later
+                  beforeIndex:
+                    type: string
+                    description: Pertains to the FIFO. Toward head.
+                  afterIndex:
+                    type: string
+                    description: Pertains to the FIFO. Toward tail.
+                  deadline:
+                    type: string
+                    title: Pertains to when the games should be deleted
         default:
           description: An unexpected error response.
           schema:
@@ -241,6 +259,12 @@ paths:
                   nextId:
                     type: string
                     format: uint64
+                  fifoHeadIndex:
+                    type: string
+                    description: Will contain the index of the game at the head.
+                  fifoTailIndex:
+                    type: string
+                    description: Will contain the index of the game at the tail.
         default:
           description: An unexpected error response.
           schema:
@@ -30788,6 +30812,15 @@ definitions:
               type: string
               format: uint64
               title: adding this field later
+            beforeIndex:
+              type: string
+              description: Pertains to the FIFO. Toward head.
+            afterIndex:
+              type: string
+              description: Pertains to the FIFO. Toward tail.
+            deadline:
+              type: string
+              title: Pertains to when the games should be deleted
       pagination:
         type: object
         properties:
@@ -30833,6 +30866,15 @@ definitions:
             type: string
             format: uint64
             title: adding this field later
+          beforeIndex:
+            type: string
+            description: Pertains to the FIFO. Toward head.
+          afterIndex:
+            type: string
+            description: Pertains to the FIFO. Toward tail.
+          deadline:
+            type: string
+            title: Pertains to when the games should be deleted
   alice.checkers.checkers.QueryGetSystemInfoResponse:
     type: object
     properties:
@@ -30842,6 +30884,12 @@ definitions:
           nextId:
             type: string
             format: uint64
+          fifoHeadIndex:
+            type: string
+            description: Will contain the index of the game at the head.
+          fifoTailIndex:
+            type: string
+            description: Will contain the index of the game at the tail.
   alice.checkers.checkers.QueryParamsResponse:
     type: object
     properties:
@@ -30866,12 +30914,27 @@ definitions:
         type: string
         format: uint64
         title: adding this field later
+      beforeIndex:
+        type: string
+        description: Pertains to the FIFO. Toward head.
+      afterIndex:
+        type: string
+        description: Pertains to the FIFO. Toward tail.
+      deadline:
+        type: string
+        title: Pertains to when the games should be deleted
   alice.checkers.checkers.SystemInfo:
     type: object
     properties:
       nextId:
         type: string
         format: uint64
+      fifoHeadIndex:
+        type: string
+        description: Will contain the index of the game at the head.
+      fifoTailIndex:
+        type: string
+        description: Will contain the index of the game at the tail.
   cosmos.base.query.v1beta1.PageRequest:
     type: object
     properties:
