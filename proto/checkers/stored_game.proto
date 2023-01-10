@@ -15,5 +15,7 @@ message StoredGame {
   string afterIndex = 8; // Pertains to the FIFO. Toward tail.
 
   string deadline = 9; // Pertains to when the games should be deleted
+
+  string winner = 10
 }
 
