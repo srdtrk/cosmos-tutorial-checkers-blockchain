@@ -31,6 +31,8 @@ const (
 	MovePlayedEventCapturedY = "captured-y"
 	MovePlayedEventWinner    = "winner"
 
+	MovePlayedEventBoard = "board"
+
 	GameRejectedEventType      = "game-rejected"
 	GameRejectedEventCreator   = "creator"
 	GameRejectedEventGameIndex = "game-index"
