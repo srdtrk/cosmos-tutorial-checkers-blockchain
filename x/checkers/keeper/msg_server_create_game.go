@@ -12,7 +12,6 @@ import (
 func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (*types.MsgCreateGameResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
 	// get new id
 	systemInfo, found := k.Keeper.GetSystemInfo(ctx) // k keeps the Keeper
 	if !found {
@@ -32,6 +31,7 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 		AfterIndex:  types.NoFifoIndex,
 		Deadline:    types.FormatDeadline(types.GetNextDeadline(ctx)),
 		Winner:      rules.PieceStrings[rules.NO_PLAYER],
+		Wager:       msg.Wager,
 	}
 
 	// make sure the addresses black and red are valid
@@ -54,6 +54,7 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 			sdk.NewAttribute(types.GameCreatedEventGameIndex, newIndex),
 			sdk.NewAttribute(types.GameCreatedEventBlack, msg.Black),
 			sdk.NewAttribute(types.GameCreatedEventRed, msg.Red),
+			sdk.NewAttribute(types.GameCreatedEventWager, strconv.FormatUint(msg.Wager, 10)),
 		),
 	)
 
