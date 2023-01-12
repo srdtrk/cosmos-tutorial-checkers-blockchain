@@ -17,5 +17,7 @@ message StoredGame {
   string deadline = 9; // Pertains to when the games should be deleted
 
   string winner = 10;
+
+  uint64 wager = 11;
 }
 
