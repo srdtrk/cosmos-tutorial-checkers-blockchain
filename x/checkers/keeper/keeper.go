@@ -17,10 +17,12 @@ type (
 		storeKey   sdk.StoreKey
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
+		bank       types.BankEscrowKeeper
 	}
 )
 
 func NewKeeper(
+	bank types.BankEscrowKeeper,
 	cdc codec.BinaryCodec,
 	storeKey,
 	memKey sdk.StoreKey,
@@ -33,7 +35,7 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-
+		bank:       bank,
 		cdc:        cdc,
 		storeKey:   storeKey,
 		memKey:     memKey,
