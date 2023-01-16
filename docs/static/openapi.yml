@@ -80,6 +80,9 @@ paths:
                       title: Pertains to when the games should be deleted
                     winner:
                       type: string
+                    wager:
+                      type: string
+                      format: uint64
               pagination:
                 type: object
                 properties:
@@ -222,6 +225,9 @@ paths:
                     title: Pertains to when the games should be deleted
                   winner:
                     type: string
+                  wager:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -30827,6 +30833,9 @@ definitions:
               title: Pertains to when the games should be deleted
             winner:
               type: string
+            wager:
+              type: string
+              format: uint64
       pagination:
         type: object
         properties:
@@ -30883,6 +30892,9 @@ definitions:
             title: Pertains to when the games should be deleted
           winner:
             type: string
+          wager:
+            type: string
+            format: uint64
   alice.checkers.checkers.QueryGetSystemInfoResponse:
     type: object
     properties:
@@ -30933,6 +30945,9 @@ definitions:
         title: Pertains to when the games should be deleted
       winner:
         type: string
+      wager:
+        type: string
+        format: uint64
   alice.checkers.checkers.SystemInfo:
     type: object
     properties:
