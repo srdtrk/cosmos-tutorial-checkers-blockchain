@@ -20,6 +20,8 @@ export interface StoredGame {
   deadline: string;
   winner: string;
   wager: number;
+  /** denomination of the wager coin (for IBC) */
+  denom: string;
 }
 
 const baseStoredGame: object = {
@@ -34,6 +36,7 @@ const baseStoredGame: object = {
   deadline: "",
   winner: "",
   wager: 0,
+  denom: "",
 };
 
 export const StoredGame = {
@@ -70,6 +73,9 @@ export const StoredGame = {
     }
     if (message.wager !== 0) {
       writer.uint32(88).uint64(message.wager);
+    }
+    if (message.denom !== "") {
+      writer.uint32(98).string(message.denom);
     }
     return writer;
   },
@@ -113,6 +119,9 @@ export const StoredGame = {
           break;
         case 11:
           message.wager = longToNumber(reader.uint64() as Long);
+          break;
+        case 12:
+          message.denom = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -179,6 +188,11 @@ export const StoredGame = {
     } else {
       message.wager = 0;
     }
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = String(object.denom);
+    } else {
+      message.denom = "";
+    }
     return message;
   },
 
@@ -196,6 +210,7 @@ export const StoredGame = {
     message.deadline !== undefined && (obj.deadline = message.deadline);
     message.winner !== undefined && (obj.winner = message.winner);
     message.wager !== undefined && (obj.wager = message.wager);
+    message.denom !== undefined && (obj.denom = message.denom);
     return obj;
   },
 
@@ -255,6 +270,11 @@ export const StoredGame = {
       message.wager = object.wager;
     } else {
       message.wager = 0;
+    }
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = object.denom;
+    } else {
+      message.denom = "";
     }
     return message;
   },
