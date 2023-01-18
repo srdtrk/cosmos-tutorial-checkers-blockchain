@@ -10,7 +10,6 @@ import (
 	"github.com/alice/checkers/x/checkers/keeper"
 	"github.com/alice/checkers/x/checkers/testutil"
 	"github.com/alice/checkers/x/checkers/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
@@ -52,6 +51,7 @@ func TestWagerHandlerCollectFailedNoMove(t *testing.T) {
 		Black:     alice,
 		MoveCount: 0,
 		Wager:     45,
+		Denom:     "stake",
 	})
 	require.NotNil(t, err)
 	require.EqualError(t, err, "black cannot pay the wager: Oops")
@@ -83,6 +83,7 @@ func TestWagerHandlerCollectFailedOneMove(t *testing.T) {
 		Red:       bob,
 		MoveCount: 1,
 		Wager:     45,
+		Denom:     "stake",
 	})
 	require.NotNil(t, err)
 	require.EqualError(t, err, "red cannot pay the wager: Oops")
@@ -97,6 +98,7 @@ func TestWagerHandlerCollectNoMove(t *testing.T) {
 		Black:     alice,
 		MoveCount: 0,
 		Wager:     45,
+		Denom:     "stake",
 	})
 	require.Nil(t, err)
 }
@@ -110,6 +112,7 @@ func TestWagerHandlerCollectOneMove(t *testing.T) {
 		Red:       bob,
 		MoveCount: 1,
 		Wager:     45,
+		Denom:     "stake",
 	})
 	require.Nil(t, err)
 }
@@ -158,6 +161,7 @@ func TestWagerHandlerPayWrongNotPayTime(t *testing.T) {
 		Red:       bob,
 		Winner:    "b",
 		MoveCount: 0,
+		Denom:     "stake",
 	})
 }
 
@@ -181,6 +185,7 @@ func TestWagerHandlerPayWrongEscrowFailed(t *testing.T) {
 		Winner:    "b",
 		MoveCount: 1,
 		Wager:     45,
+		Denom:     "stake",
 	})
 }
 
@@ -195,6 +200,7 @@ func TestWagerHandlerPayEscrowCalledOneMove(t *testing.T) {
 		Winner:    "b",
 		MoveCount: 1,
 		Wager:     45,
+		Denom:     "stake",
 	})
 }
 
@@ -202,13 +208,14 @@ func TestWagerHandlerPayEscrowCalledTwoMoves(t *testing.T) {
 	keeper, context, ctrl, escrow := setupKeeperForWagerHandler(t)
 	ctx := sdk.UnwrapSDKContext(context)
 	defer ctrl.Finish()
-	escrow.ExpectRefund(context, alice, 90)
+	escrow.ExpectRefundWithDenom(context, alice, 90, "coin")
 	keeper.MustPayWinnings(ctx, &types.StoredGame{
 		Black:     alice,
 		Red:       bob,
 		Winner:    "b",
 		MoveCount: 2,
 		Wager:     45,
+		Denom:     "coin",
 	})
 }
 
@@ -267,6 +274,7 @@ func TestWagerHandlerRefundWrongEscrowFailed(t *testing.T) {
 		Black:     alice,
 		MoveCount: 1,
 		Wager:     45,
+		Denom:     "stake",
 	})
 }
 
@@ -274,10 +282,11 @@ func TestWagerHandlerRefundCalled(t *testing.T) {
 	keeper, context, ctrl, escrow := setupKeeperForWagerHandler(t)
 	ctx := sdk.UnwrapSDKContext(context)
 	defer ctrl.Finish()
-	escrow.ExpectRefund(context, alice, 45)
+	escrow.ExpectRefundWithDenom(context, alice, 45, "gold")
 	keeper.MustRefundWager(ctx, &types.StoredGame{
 		Black:     alice,
 		MoveCount: 1,
 		Wager:     45,
+		Denom:     "gold",
 	})
 }
