@@ -19,5 +19,7 @@ message StoredGame {
   string winner = 10;
 
   uint64 wager = 11;
+
+  string denom = 12; // denomination of the wager coin (for IBC)
 }
 
