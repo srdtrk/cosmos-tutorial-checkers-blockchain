@@ -1,0 +1,10 @@
+syntax = "proto3";
+package alice.checkers.leaderboard;
+
+option go_package = "github.com/alice/checkers/x/leaderboard/types";
+import "leaderboard/player_info.proto"; 
+
+message Board {
+  PlayerInfo playerInfo = 1; 
+  
+}
