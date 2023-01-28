@@ -64,6 +64,10 @@ func (k Keeper) ForfeitExpiredGames(goCtx context.Context) {
 				storedGame.Board = ""
 				// Pay the winnings of the player who won the game
 				k.MustPayWinnings(ctx, &storedGame)
+
+				// Here you can register a forfeit
+				k.MustRegisterPlayerForfeit(ctx, &storedGame)
+
 				k.SetStoredGame(ctx, storedGame)
 			}
 			// emit event
