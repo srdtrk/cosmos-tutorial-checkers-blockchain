@@ -3,7 +3,6 @@ package cli
 import (
 	"strconv"
 
-	"encoding/json"
 	"github.com/alice/checkers/x/leaderboard/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -16,7 +15,7 @@ var _ = strconv.Itoa(0)
 
 func CmdSendCandidate() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "send-candidate [src-port] [src-channel] [player-info]",
+		Use:   "send-candidate [src-port] [src-channel]",
 		Short: "Send a candidate over IBC",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -28,12 +27,6 @@ func CmdSendCandidate() *cobra.Command {
 			creator := clientCtx.GetFromAddress().String()
 			srcPort := args[0]
 			srcChannel := args[1]
-
-			argPlayerInfo := new(types.PlayerInfo)
-			err = json.Unmarshal([]byte(args[2]), argPlayerInfo)
-			if err != nil {
-				return err
-			}
 
 			// Get the relative timeout timestamp
 			timeoutTimestamp, err := cmd.Flags().GetUint64(flagPacketTimeoutTimestamp)
@@ -48,7 +41,7 @@ func CmdSendCandidate() *cobra.Command {
 				timeoutTimestamp = consensusState.GetTimestamp() + timeoutTimestamp
 			}
 
-			msg := types.NewMsgSendCandidate(creator, srcPort, srcChannel, timeoutTimestamp, argPlayerInfo)
+			msg := types.NewMsgSendCandidate(creator, srcPort, srcChannel, timeoutTimestamp)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
