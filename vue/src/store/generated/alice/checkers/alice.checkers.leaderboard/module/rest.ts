@@ -13,6 +13,8 @@ export interface LeaderboardBoard {
   playerInfo?: LeaderboardPlayerInfo[];
 }
 
+export type LeaderboardMsgSendCandidateResponse = object;
+
 export type LeaderboardMsgUpdateBoardResponse = object;
 
 /**

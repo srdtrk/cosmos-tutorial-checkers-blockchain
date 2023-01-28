@@ -31735,6 +31735,8 @@ definitions:
               format: uint64
             dateUpdated:
               type: string
+  alice.checkers.leaderboard.MsgSendCandidateResponse:
+    type: object
   alice.checkers.leaderboard.MsgUpdateBoardResponse:
     type: object
   alice.checkers.leaderboard.Params:
