@@ -12,23 +12,15 @@ import (
 func (k msgServer) SendCandidate(goCtx context.Context, msg *types.MsgSendCandidate) (*types.MsgSendCandidateResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	PlayerInfo, PlayerFound := k.GetPlayerInfo(ctx, msg.Creator)
+
+	if !PlayerFound {
+		return nil, errors.New("Player not found")
+	}
+
 	// Construct the packet
 	var packet types.CandidatePacketData
-
-	allPlayerInfo := k.GetAllPlayerInfo(ctx)
-
-	found_in_player_list := false
-	for i := range allPlayerInfo {
-		if allPlayerInfo[i].Index == msg.Creator {
-			packet.PlayerInfo = &allPlayerInfo[i]
-			found_in_player_list = true
-			break
-		}
-	}
-
-	if !found_in_player_list {
-		return nil, errors.New("player not found")
-	}
+	packet.PlayerInfo = &PlayerInfo
 
 	// Transmit the packet
 	err := k.TransmitCandidatePacket(
