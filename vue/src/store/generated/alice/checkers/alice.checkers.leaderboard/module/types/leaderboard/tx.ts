@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { Reader, util, configure, Writer } from "protobufjs/minimal";
 import * as Long from "long";
-import { PlayerInfo } from "../leaderboard/player_info";
 
 export const protobufPackage = "alice.checkers.leaderboard";
 
@@ -16,7 +15,6 @@ export interface MsgSendCandidate {
   port: string;
   channelID: string;
   timeoutTimestamp: number;
-  playerInfo: PlayerInfo | undefined;
 }
 
 export interface MsgSendCandidateResponse {}
@@ -135,9 +133,6 @@ export const MsgSendCandidate = {
     if (message.timeoutTimestamp !== 0) {
       writer.uint32(32).uint64(message.timeoutTimestamp);
     }
-    if (message.playerInfo !== undefined) {
-      PlayerInfo.encode(message.playerInfo, writer.uint32(42).fork()).ldelim();
-    }
     return writer;
   },
 
@@ -159,9 +154,6 @@ export const MsgSendCandidate = {
           break;
         case 4:
           message.timeoutTimestamp = longToNumber(reader.uint64() as Long);
-          break;
-        case 5:
-          message.playerInfo = PlayerInfo.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -196,11 +188,6 @@ export const MsgSendCandidate = {
     } else {
       message.timeoutTimestamp = 0;
     }
-    if (object.playerInfo !== undefined && object.playerInfo !== null) {
-      message.playerInfo = PlayerInfo.fromJSON(object.playerInfo);
-    } else {
-      message.playerInfo = undefined;
-    }
     return message;
   },
 
@@ -211,10 +198,6 @@ export const MsgSendCandidate = {
     message.channelID !== undefined && (obj.channelID = message.channelID);
     message.timeoutTimestamp !== undefined &&
       (obj.timeoutTimestamp = message.timeoutTimestamp);
-    message.playerInfo !== undefined &&
-      (obj.playerInfo = message.playerInfo
-        ? PlayerInfo.toJSON(message.playerInfo)
-        : undefined);
     return obj;
   },
 
@@ -242,11 +225,6 @@ export const MsgSendCandidate = {
       message.timeoutTimestamp = object.timeoutTimestamp;
     } else {
       message.timeoutTimestamp = 0;
-    }
-    if (object.playerInfo !== undefined && object.playerInfo !== null) {
-      message.playerInfo = PlayerInfo.fromPartial(object.playerInfo);
-    } else {
-      message.playerInfo = undefined;
     }
     return message;
   },
