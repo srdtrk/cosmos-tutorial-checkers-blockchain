@@ -61,3 +61,11 @@ func TestPlayerInfoGetAll(t *testing.T) {
 		nullify.Fill(keeper.GetAllPlayerInfo(ctx)),
 	)
 }
+
+func TestNoInfo(t *testing.T) {
+	keeper, ctx := keepertest.LeaderboardKeeper(t)
+	_, found := keeper.GetPlayerInfo(ctx,
+		"none",
+	)
+	require.False(t, found)
+}
