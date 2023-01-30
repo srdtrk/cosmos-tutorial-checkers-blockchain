@@ -30,7 +30,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
-				Board: &types.Board{
+				Board: types.Board{
 					PlayerInfo: []types.PlayerInfo{},
 				},
 				// this line is used by starport scaffolding # types/genesis/validField

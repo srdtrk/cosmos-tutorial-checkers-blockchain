@@ -14,7 +14,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetPlayerInfo(ctx, elem)
 	}
 	// Set
-	k.SetBoard(ctx, *genState.Board)
+	k.SetBoard(ctx, genState.Board)
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetPort(ctx, genState.PortId)
 	// Only try to bind to port if it is not already bound, since we may already own
@@ -40,7 +40,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	// Get all board
 	board, found := k.GetBoard(ctx)
 	if found {
-		genesis.Board = &board
+		genesis.Board = board
 	}
 	// this line is used by starport scaffolding # genesis/module/export
 

@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+
 	host "github.com/cosmos/ibc-go/v3/modules/core/24-host"
 )
 
@@ -13,7 +14,9 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		PortId:         PortID,
 		PlayerInfoList: []PlayerInfo{},
-		Board:          nil,
+		Board: Board{
+			PlayerInfo: []PlayerInfo{},
+		},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
