@@ -35,4 +35,4 @@ do-checksum:
 	cd build && sha256sum checkers-linux-amd64 checkers-linux-arm64 checkers-darwin-amd64 > checkers_checksum
 
 build-with-checksum:
-	build-all do-checksum
+	make build-all && make do-checksum
