@@ -9,8 +9,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-
-	leaderBoardKeeper "github.com/alice/checkers/x/leaderboard/keeper"
 )
 
 type (
@@ -20,13 +18,13 @@ type (
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
 		bank       types.BankEscrowKeeper
-		board      leaderBoardKeeper.Keeper
+		board      types.CheckersLeaderboardKeeper
 	}
 )
 
 func NewKeeper(
 	bank types.BankEscrowKeeper,
-	board leaderBoardKeeper.Keeper,
+	board types.CheckersLeaderboardKeeper,
 	cdc codec.BinaryCodec,
 	storeKey,
 	memKey sdk.StoreKey,

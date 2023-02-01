@@ -19,10 +19,10 @@ import (
 )
 
 func CheckersKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
-	return CheckersKeeperWithMocks(t, nil)
+	return CheckersKeeperWithMocks(t, nil, nil)
 }
 
-func CheckersKeeperWithMocks(t testing.TB, bank *testutil.MockBankEscrowKeeper) (*keeper.Keeper, sdk.Context) {
+func CheckersKeeperWithMocks(t testing.TB, bank *testutil.MockBankEscrowKeeper, leaderboard *testutil.MockCheckersLeaderboardKeeper) (*keeper.Keeper, sdk.Context) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 
@@ -42,10 +42,9 @@ func CheckersKeeperWithMocks(t testing.TB, bank *testutil.MockBankEscrowKeeper) 
 		"CheckersParams",
 	)
 
-	leaderboardKeeper, _ := LeaderboardKeeper(t)
 	k := keeper.NewKeeper(
 		bank,
-		*leaderboardKeeper,
+		leaderboard,
 		cdc,
 		storeKey,
 		memStoreKey,
