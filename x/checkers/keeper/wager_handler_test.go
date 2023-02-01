@@ -19,7 +19,8 @@ func setupKeeperForWagerHandler(t testing.TB) (keeper.Keeper, context.Context,
 	*gomock.Controller, *testutil.MockBankEscrowKeeper) {
 	ctrl := gomock.NewController(t)
 	bankMock := testutil.NewMockBankEscrowKeeper(ctrl)
-	k, ctx := keepertest.CheckersKeeperWithMocks(t, bankMock)
+	boardMock := testutil.NewMockCheckersLeaderboardKeeper(ctrl)
+	k, ctx := keepertest.CheckersKeeperWithMocks(t, bankMock, boardMock)
 	checkers.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	context := sdk.WrapSDKContext(ctx)
 	return *k, context, ctrl, bankMock
