@@ -13,26 +13,26 @@ func (escrow *MockCheckersLeaderboardKeeper) ExpectAny(context context.Context) 
 	escrow.EXPECT().MustAddForfeitedGameResultToPlayer(sdk.UnwrapSDKContext(context), gomock.Any()).AnyTimes()
 }
 
-func (escrow *MockCheckersLeaderboardKeeper) ExpectWin(context context.Context, who string) {
+func (escrow *MockCheckersLeaderboardKeeper) ExpectWin(context context.Context, who string) *gomock.Call {
 	whoAddr, err := sdk.AccAddressFromBech32(who)
 	if err != nil {
 		panic(err)
 	}
-	escrow.EXPECT().MustAddWonGameResultToPlayer(sdk.UnwrapSDKContext(context), whoAddr)
+	return escrow.EXPECT().MustAddWonGameResultToPlayer(sdk.UnwrapSDKContext(context), whoAddr)
 }
 
-func (escrow *MockCheckersLeaderboardKeeper) ExpectLoss(context context.Context, who string) {
+func (escrow *MockCheckersLeaderboardKeeper) ExpectLoss(context context.Context, who string) *gomock.Call {
 	whoAddr, err := sdk.AccAddressFromBech32(who)
 	if err != nil {
 		panic(err)
 	}
-	escrow.EXPECT().MustAddLostGameResultToPlayer(sdk.UnwrapSDKContext(context), whoAddr)
+	return escrow.EXPECT().MustAddLostGameResultToPlayer(sdk.UnwrapSDKContext(context), whoAddr)
 }
 
-func (escrow *MockCheckersLeaderboardKeeper) ExpectForfeit(context context.Context, who string) {
+func (escrow *MockCheckersLeaderboardKeeper) ExpectForfeit(context context.Context, who string) *gomock.Call {
 	whoAddr, err := sdk.AccAddressFromBech32(who)
 	if err != nil {
 		panic(err)
 	}
-	escrow.EXPECT().MustAddForfeitedGameResultToPlayer(sdk.UnwrapSDKContext(context), whoAddr)
+	return escrow.EXPECT().MustAddForfeitedGameResultToPlayer(sdk.UnwrapSDKContext(context), whoAddr)
 }
