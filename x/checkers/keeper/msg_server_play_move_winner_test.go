@@ -10,10 +10,12 @@ import (
 )
 
 func TestPlayMoveUpToWinner(t *testing.T) {
-	msgServer, keeper, context, ctrl, escrow, _ := setupMsgServerWithOneGameForPlayMove(t)
+	msgServer, keeper, context, ctrl, escrow, board := setupMsgServerWithOneGameForPlayMove(t)
 	ctx := sdk.UnwrapSDKContext(context)
 	defer ctrl.Finish()
 	escrow.ExpectAny(context)
+	bobWin := board.ExpectWin(context, bob).Times(1)
+	board.ExpectLoss(context, carol).Times(1).After(bobWin)
 
 	testutil.PlayAllMoves(t, msgServer, context, "1", testutil.Game1Moves)
 
@@ -56,11 +58,13 @@ func TestPlayMoveUpToWinner(t *testing.T) {
 }
 
 func TestPlayMoveUpToWinnerCalledBank(t *testing.T) {
-	msgServer, _, context, ctrl, escrow, _ := setupMsgServerWithOneGameForPlayMove(t)
+	msgServer, _, context, ctrl, escrow, board := setupMsgServerWithOneGameForPlayMove(t)
 	defer ctrl.Finish()
 	payBob := escrow.ExpectPay(context, bob, 45).Times(1)
 	payCarol := escrow.ExpectPay(context, carol, 45).Times(1).After(payBob)
 	escrow.ExpectRefund(context, bob, 90).Times(1).After(payCarol)
+	bobWin := board.ExpectWin(context, bob).Times(1)
+	board.ExpectLoss(context, carol).Times(1).After(bobWin)
 
 	testutil.PlayAllMoves(t, msgServer, context, "1", testutil.Game1Moves)
 }

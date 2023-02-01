@@ -309,12 +309,14 @@ func TestForfeit2OldestPlayedOnceIn1Call(t *testing.T) {
 }
 
 func TestForfeitPlayedTwice(t *testing.T) {
-	msgServer, keeper, context, ctrl, escrow, _ := setupMsgServerWithOneGameForPlayMove(t)
+	msgServer, keeper, context, ctrl, escrow, board := setupMsgServerWithOneGameForPlayMove(t)
 	ctx := sdk.UnwrapSDKContext(context)
 	defer ctrl.Finish()
 	payBob := escrow.ExpectPay(context, bob, 45).Times(1)
 	payCarol := escrow.ExpectPay(context, carol, 45).Times(1).After(payBob)
 	escrow.ExpectRefund(context, carol, 90).Times(1).After(payCarol)
+	carolWin := board.ExpectWin(context, carol).Times(1)
+	board.ExpectForfeit(context, bob).Times(1).After(carolWin)
 	msgServer.PlayMove(context, &types.MsgPlayMove{
 		Creator:   bob,
 		GameIndex: "1",
@@ -376,12 +378,14 @@ func TestForfeitPlayedTwice(t *testing.T) {
 }
 
 func TestForfeitOlderPlayedTwice(t *testing.T) {
-	msgServer, keeper, context, ctrl, escrow, _ := setupMsgServerWithOneGameForPlayMove(t)
+	msgServer, keeper, context, ctrl, escrow, board := setupMsgServerWithOneGameForPlayMove(t)
 	ctx := sdk.UnwrapSDKContext(context)
 	defer ctrl.Finish()
 	payBob := escrow.ExpectPay(context, bob, 45).Times(1)
 	payCarol := escrow.ExpectPay(context, carol, 45).Times(1).After(payBob)
 	escrow.ExpectRefund(context, carol, 90).Times(1).After(payCarol)
+	carolWin := board.ExpectWin(context, carol).Times(1)
+	board.ExpectForfeit(context, bob).Times(1).After(carolWin)
 	msgServer.PlayMove(context, &types.MsgPlayMove{
 		Creator:   bob,
 		GameIndex: "1",
@@ -450,7 +454,7 @@ func TestForfeitOlderPlayedTwice(t *testing.T) {
 }
 
 func TestForfeit2OldestPlayedTwiceIn1Call(t *testing.T) {
-	msgServer, keeper, context, ctrl, escrow, _ := setupMsgServerWithOneGameForPlayMove(t)
+	msgServer, keeper, context, ctrl, escrow, board := setupMsgServerWithOneGameForPlayMove(t)
 	ctx := sdk.UnwrapSDKContext(context)
 	defer ctrl.Finish()
 	payBob := escrow.ExpectPay(context, bob, 45).Times(1)
@@ -459,6 +463,10 @@ func TestForfeit2OldestPlayedTwiceIn1Call(t *testing.T) {
 	payAlice := escrow.ExpectPayWithDenom(context, alice, 46, "coin").Times(1).After(payCarol2)
 	refundCarol := escrow.ExpectRefund(context, carol, 90).Times(1).After(payAlice)
 	escrow.ExpectRefundWithDenom(context, alice, 92, "coin").Times(1).After(refundCarol)
+	carolWin := board.ExpectWin(context, carol).Times(1)
+	bobForfeit := board.ExpectForfeit(context, bob).Times(1).After(carolWin)
+	aliceWin := board.ExpectWin(context, alice).Times(1).After(bobForfeit)
+	board.ExpectForfeit(context, carol).Times(1).After(aliceWin)
 	msgServer.PlayMove(context, &types.MsgPlayMove{
 		Creator:   bob,
 		GameIndex: "1",
